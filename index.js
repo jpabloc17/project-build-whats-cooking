@@ -1,5 +1,7 @@
 //www.themealdb.com/api/json/v1/1/list.php?a=list - Cuisine Option
 //www.themealdb.com/api/json/v1/1/list.php?c=list - Categories Option
+//www.themealdb.com/api/json/v1/1/filter.php?a=Canadian - Recipes filter By Area
+//www.themealdb.com/api/json/v1/1/filter.php?c=Seafood - Recepes filter By Option
 
 // Elements
 const cuisineSelect = document.querySelector("#cuisines");
@@ -13,6 +15,7 @@ getCategories();
 cuisineSelect.addEventListener("change", getRecipesByCuisine);
 categorySelect.addEventListener("change", getRecipesByCategory);
 
+// Dropdown Functions
 function getCuisines() {
   fetch("https://www.themealdb.com/api/json/v1/1/list.php?a=list")
     .then((response) => response.json())
@@ -43,4 +46,30 @@ function renderCategoryOptions(categories) {
     option.textContent = category.strCategory;
     categorySelect.append(option);
   });
+}
+
+// Recipe Collection Functions
+
+function getRecipesByCuisine(e) {
+  const cuisine = e.target.value;
+  fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?a=${cuisine}`)
+    .then((response) => response.json())
+    .then((recipes) => renderAllRecipes(recipes.meals))
+    .catch((error) => alert(error));
+}
+
+function getRecipesByCategory(e) {
+  const category = e.target.value;
+  fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`)
+    .then((response) => response.json())
+    .then((recipes) => renderAllRecipes(recipes.meals))
+    .catch((error) => alert(error));
+}
+
+function renderAllRecipes(recipes) {
+  recipes.forEach((recipe) => {
+    renderRecipeCard(recipe);
+  });
+  cuisineSelect.value = "";
+  categorySelect.value = "";
 }
