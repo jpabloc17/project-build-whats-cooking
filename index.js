@@ -2,6 +2,7 @@
 //www.themealdb.com/api/json/v1/1/list.php?c=list - Categories Option
 //www.themealdb.com/api/json/v1/1/filter.php?a=Canadian - Recipes filter By Area
 //www.themealdb.com/api/json/v1/1/filter.php?c=Seafood - Recepes filter By Option
+//www.themealdb.com/api/json/v1/1/lookup.php?i=52772 - Lookup full meal details by id
 
 // Elements
 const cuisineSelect = document.querySelector("#cuisines");
@@ -85,7 +86,8 @@ function renderRecipeCard(recipe) {
 
   const cardDiv = document.createElement("div");
   cardDiv.classList.add("card");
-  // add event listener to card
+  cardDiv.addEventListener("click", (e) => getRecipeDetails(e, recipeId));
+
   const image = document.createElement("img");
   image.src = recipeImage;
   const title = document.createElement("h3");
@@ -93,4 +95,11 @@ function renderRecipeCard(recipe) {
 
   cardDiv.append(image, title);
   recipeContainer.append(cardDiv);
+}
+
+function getRecipeDetails(e, recipeId) {
+  fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`)
+    .then((response) => response.json())
+    .then((recipe) => console.log(recipe.meals[0]))
+    .catch((error) => alert(error));
 }
