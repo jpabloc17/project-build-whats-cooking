@@ -6,6 +6,7 @@
 // Elements
 const cuisineSelect = document.querySelector("#cuisines");
 const categorySelect = document.querySelector("#categories");
+const recipeContainer = document.querySelector(".recipe-container");
 
 // Function Calls
 getCuisines();
@@ -67,9 +68,29 @@ function getRecipesByCategory(e) {
 }
 
 function renderAllRecipes(recipes) {
+  recipeContainer.replaceChildren();
   recipes.forEach((recipe) => {
     renderRecipeCard(recipe);
   });
   cuisineSelect.value = "";
   categorySelect.value = "";
+}
+
+function renderRecipeCard(recipe) {
+  const {
+    idMeal: recipeId,
+    strMeal: recipeName,
+    strMealThumb: recipeImage,
+  } = recipe;
+
+  const cardDiv = document.createElement("div");
+  cardDiv.classList.add("card");
+  // add event listener to card
+  const image = document.createElement("img");
+  image.src = recipeImage;
+  const title = document.createElement("h3");
+  title.textContent = recipeName;
+
+  cardDiv.append(image, title);
+  recipeContainer.append(cardDiv);
 }
