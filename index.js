@@ -15,8 +15,8 @@ const recipeDetailsContainer = document.querySelector(
 const recipeDetailsSection = document.querySelector(".recipe-details-section");
 const welcomeSection = document.querySelector(".welcome");
 const featuredRecipeDiv = document.querySelector(".featured");
-// const mainTitle = document.querySelector(".main-title")
-// const ingredientSearch = document.querySelector("#ingredient-search")
+const mainTitle = document.querySelector(".main-title");
+const ingredientSearch = document.querySelector("#ingredient-search");
 
 // Function Calls
 showWelcome();
@@ -26,8 +26,8 @@ getCategories();
 // Event Listeners
 cuisineSelect.addEventListener("change", getRecipesByCuisine);
 categorySelect.addEventListener("change", getRecipesByCategory);
-//mainTitle.addEventListener("click", showWelcome)
-// ingredientSearch.addEventListener("search", getRecipesByIngredient)
+mainTitle.addEventListener("click", showWelcome);
+ingredientSearch.addEventListener("search", getRecipesByIngredient);
 
 // Recipe Collection Functions
 
@@ -44,6 +44,23 @@ function getRecipesByCategory(e) {
   fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?c=${category}`)
     .then((response) => response.json())
     .then((recipes) => renderAllRecipes(recipes.meals))
+    .catch((error) => alert(error));
+}
+
+function getRecipesByIngredient(e) {
+  const ingredient = e.target.value;
+  if (!ingredient) return;
+
+  fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${ingredient}`)
+    .then((r) => r.json())
+    .then((recipes) => {
+      if (!recipes.meals) {
+        console.log("no recipes");
+        alert("That ingredient is not found in our recipe database");
+      } else {
+        renderAllRecipes(recipes.meals);
+      }
+    })
     .catch((error) => alert(error));
 }
 
