@@ -9,15 +9,25 @@ const cuisineSelect = document.querySelector("#cuisines");
 const categorySelect = document.querySelector("#categories");
 const recipeContainer = document.querySelector(".recipe-container");
 const selectionH1 = document.querySelector(".selection-heading");
-const recipeDetailsContainer = document.querySelector(".recipe-container");
+const recipeDetailsContainer = document.querySelector(
+  ".recipe-details-container"
+);
+const recipeDetailsSection = document.querySelector(".recipe-details-section");
+const welcomeSection = document.querySelector(".welcome");
+const featuredRecipeDiv = document.querySelector(".featured");
+// const mainTitle = document.querySelector(".main-title")
+// const ingredientSearch = document.querySelector("#ingredient-search")
 
 // Function Calls
+showWelcome();
 getCuisines();
 getCategories();
 
 // Event Listeners
 cuisineSelect.addEventListener("change", getRecipesByCuisine);
 categorySelect.addEventListener("change", getRecipesByCategory);
+//mainTitle.addEventListener("click", showWelcome)
+// ingredientSearch.addEventListener("search", getRecipesByIngredient)
 
 // Recipe Collection Functions
 
@@ -38,7 +48,9 @@ function getRecipesByCategory(e) {
 }
 
 function renderAllRecipes(recipes) {
-  // welcomeSection.style.display = "none"
+  welcomeSection.style.display = "none";
+  recipeDetailsContainer.style.display = "none";
+  recipeContainer.style.display = "grid";
   recipeContainer.replaceChildren();
 
   selectionH1.textContent = cuisineSelect.value || categorySelect.value;
@@ -50,7 +62,7 @@ function renderAllRecipes(recipes) {
   categorySelect.value = "";
 }
 
-function renderRecipeCard(recipe) {
+function renderRecipeCard(recipe, featured = false) {
   const {
     idMeal: recipeId,
     strMeal: recipeName,
@@ -71,7 +83,12 @@ function renderRecipeCard(recipe) {
 
   recipeTitleDiv.append(title);
   cardDiv.append(image, recipeTitleDiv);
-  recipeContainer.append(cardDiv);
+
+  if (featured) {
+    featuredRecipeDiv.append(cardDiv);
+  } else {
+    recipeContainer.append(cardDiv);
+  }
 }
 
 function getRecipeDetails(e, recipeId) {
@@ -82,9 +99,10 @@ function getRecipeDetails(e, recipeId) {
 }
 
 function renderRecipeDetails(recipeDetails) {
-  // welcomeSection.style.display = "none"
-  //
+  welcomeSection.style.display = "none";
+  recipeDetailsContainer.style.display = "grid";
   recipeContainer.replaceChildren();
+  selectionH1.textContent = "";
 
   const {
     strMeal: recipe,
