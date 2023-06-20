@@ -100,6 +100,90 @@ function renderRecipeCard(recipe) {
 function getRecipeDetails(e, recipeId) {
   fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`)
     .then((response) => response.json())
-    .then((recipe) => console.log(recipe.meals[0]))
+    .then((recipe) => renderRecipeDetails(recipe.meals[0]))
     .catch((error) => alert(error));
+}
+
+function renderRecipeDetails(recipeDetails) {
+  // welcomeSection.style.display = "none"
+  //
+  recipeContainer.replaceChildren();
+
+  const {
+    strMeal: recipe,
+    strArea: cuisine,
+    strCategory: category,
+    strMealThumb: image,
+    strInstructions: directions,
+    strYoutube: youTubeLink,
+  } = recipeDetails;
+
+  // Title Area
+  let titleArea = document.querySelector(".recipe-details-title");
+  const title = document.createElement("p");
+  title.textContent = recipe;
+  titleArea.replaceChildren();
+  titleArea.append(title);
+
+  // Image Area
+  const imageArea = document.querySelector(".recipe-details-image");
+  const recipeImage = document.createElement("img");
+  recipeImage.src = image;
+  recipeImage.alt = `Image for ${recipe}`;
+  imageArea.replaceChildren();
+  imageArea.append(recipeImage);
+
+  // Ingredients Area
+  const ingredients = parseIngredients(recipeDetails);
+
+  const ingredientPs = ingredients.map((ingredient) => {
+    const ingredientP = document.createElement("p");
+    ingredientP.textContent = ingredient;
+    return ingredientP;
+  });
+
+  const ingredientsArea = document.querySelector(".recipe-details-ingredients");
+  const ingredientsTitle = document.createElement("h3");
+  ingredientsTitle.textContent = "Ingredients";
+  ingredientsTitle.style.textDecoration = "underline";
+  ingredientsArea.replaceChildren();
+  ingredientsArea.append(ingredientsTitle, ...ingredientPs);
+
+  // Directions Area
+  const directionsArea = document.querySelector(".recipe-details-directions");
+  const directionsTitle = document.createElement("h3");
+  directionsTitle.textContent = "Directions";
+  directionsTitle.style.textDecoration = "underline";
+  const directionsP = document.createElement("p");
+  directionsArea.replaceChildren();
+  directionsP.textContent = directions;
+  directionsArea.append(directionsTitle, directionsP);
+
+  // Resource Area
+  const resourcesArea = document.querySelector(".recipe-details-resources");
+  const youTubeLinkTag = document.createElement("a");
+  youTubeLinkTag.href = youTubeLink;
+  youTubeLinkTag.target = "_blank";
+  youTubeLinkTag.text = `How to make ${recipe} on YouTube. `;
+  const cuisineCategory = document.createElement("p");
+  cuisineCategory.textContent = `(Cuisine: ${cuisine}, Category: ${category})`;
+  resourcesArea.replaceChildren();
+  resourcesArea.append(youTubeLinkTag, cuisineCategory);
+}
+
+function parseIngredients(recipe) {
+  const ingredientArray = [];
+
+  for (let i = 1; i < 21; i++) {
+    let measure = recipe["strMeasure" + i.toString()];
+    let ingredient = recipe["strIngredient" + i.toString()];
+    if (ingredient === "" || ingredient === null) {
+      ingredient = "";
+      measure = "";
+      continue;
+    }
+    let ingredientString = measure.trim() + " " + ingredient.trim();
+    ingredientArray.push(ingredientString);
+  }
+  return ingredientArray;
 }

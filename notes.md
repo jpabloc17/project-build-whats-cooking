@@ -6,13 +6,13 @@
 - [x] Create HTML for category dropdown
 - [x] Create option tags for cuisine dropdown and append
 - [x] Create option tags for category dropdown and append
-- [ ] Create event listener for cuisine dropdown
-- [ ] Create event listener for category dropdown
+- [x] Create event listener for cuisine dropdown
+- [x] Create event listener for category dropdown
 
 ## Step 2
 
-- [ ] Renders temporary cards for retrieved recipes
-- [ ] Adds event listener on card click to retrieve recipe details
+- [x] Renders temporary cards for retrieved recipes
+- [x] Adds event listener on card click to retrieve recipe details
 
 ## Step 3
 
@@ -36,9 +36,9 @@
 - [x] Your app must be an HTML/CSS/JS frontend that accesses data from a public API or from your own API built using json-server and a db.json file.
 - [x] Your API or db.json should return a collection of at least 5 objects with each object having at least 3 attributes.
 - [ ] Single HTML file
-- [ ] 2 DISTINCT event listeners
-- [ ] One instance of array iteration using available array methods(map, forEach, filter, etc.)
-- [ ] Each event listener must have its own callback function using .addEventListener
+- [x] 2 DISTINCT event listeners
+- [x] One instance of array iteration using available array methods(map, forEach, filter, etc.)
+- [x] Each event listener must have its own callback function using .addEventListener
 
 # User Story
 
